@@ -2,7 +2,7 @@ from manim import *
 
 class BoylesLawFormula(Scene):
     def construct(self):
-        # Create equation parts with parentheses for implicit multiplication
+        
         left_p1 = MathTex("(")
         p1 = MathTex("P_1")
         right_p1 = MathTex(")")
@@ -19,15 +19,15 @@ class BoylesLawFormula(Scene):
         v2 = MathTex("V_2")
         right_v2 = MathTex(")")
         
-        # Arrange horizontally with tight spacing
+       
         left_side = VGroup(left_p1, p1, right_p1, left_v1, v1, right_v1).arrange(RIGHT, buff=0.1)
         right_side = VGroup(left_p2, p2, right_p2, left_v2, v2, right_v2).arrange(RIGHT, buff=0.1)
         equation = VGroup(left_side, equals, right_side).arrange(RIGHT, buff=0.3)
         
-        # Scale to 90% width
+      
         equation.set_width(config.frame_width * 0.9)
         
-        # Animation sequence (total 3.2s)
+       
         self.play(
             Write(left_p1), Write(p1), Write(right_p1),
             Write(left_v1), Write(v1), Write(right_v1),
@@ -40,5 +40,5 @@ class BoylesLawFormula(Scene):
             run_time=1.2
         )
         
-        # Hold for 4.8s (total 8s)
+        
         self.wait(4.8)
