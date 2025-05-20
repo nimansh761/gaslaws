@@ -5,7 +5,7 @@ class PressureLine(Scene):
         # Single line with all conversions
         conv = MathTex(
             "101.3", "\\text{kPa}", "=", "1", "\\text{atm}", 
-            "=", "760", "\\text{mmHg}", "=", "1", "\\text{torr}"
+            "=", "760", "\\text{mmHg}", "=", "760", "\\text{torr}"
         ).scale(1.5)
         
         # Color coding
