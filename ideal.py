@@ -1,25 +1,27 @@
 from manim import *
 
-class FinalIdealGasLawSimplified(Scene):
+class IdealGasLawSimpleText(Scene):
     def construct(self):
+        # Part 1: PV = nRT with Text objects
+        p = Text("P", color=BLUE, font_size=72)
+        v = Text("V", color=RED, font_size=72)
+        eq = Text("=", font_size=72)
+        n = Text("n", color=GREEN, font_size=72)
+        r = Text("R", color=GOLD, font_size=72)
+        t = Text("T", color=PURPLE, font_size=72)
         
-        equation = MathTex("P", "V", "=", "n", "R", "T")
+        # Arrange the equation
+        equation = VGroup(p, v, eq, n, r, t).arrange(RIGHT, buff=0.3)
+        equation.center()
         
-        
-        equation[0].set_color(BLUE)    # P (blue)
-        equation[1].set_color(RED)     # V (red)
-        equation[3].set_color(GREEN)   # n (green)
-        equation[4].set_color(GOLD)    # R (gold)
-        equation[5].set_color(PURPLE)  # T (purple)
-        
-        equation.scale(2)
         self.play(Write(equation), run_time=2)
         
+        # Add labels
+        n_label = Text("Moles", color=GREEN, font_size=36).next_to(n, DOWN, buff=0.5)
+        t_label = Text("Kelvin", color=PURPLE, font_size=36).next_to(t, DOWN, buff=0.5)
         
-        n_label = Tex("moles").next_to(equation[3], DOWN, buff=0.7).set_color(GREEN)
-        t_label = Tex("Kelvin").next_to(equation[5], DOWN, buff=0.7).set_color(PURPLE)
-        n_arrow = Arrow(n_label.get_top(), equation[3].get_bottom(), color=GREEN, buff=0.2)
-        t_arrow = Arrow(t_label.get_top(), equation[5].get_bottom(), color=PURPLE, buff=0.2)
+        n_arrow = Arrow(n_label.get_top(), n.get_bottom(), color=GREEN)
+        t_arrow = Arrow(t_label.get_top(), t.get_bottom(), color=PURPLE)
         
         self.play(
             Write(n_label),
@@ -28,32 +30,48 @@ class FinalIdealGasLawSimplified(Scene):
             GrowArrow(t_arrow),
             run_time=2
         )
-        self.wait(3)  
+        self.wait(3)
         
-       
-        r_value = MathTex("R", "=", "0.0821", r"\frac{L \cdot atm}{mol \cdot K}")
-        r_value.scale(1.5)
-        r_value.next_to(equation, DOWN, buff=1.5)
+        # Part 2: R value with Text
+        r_text = Text("R = 0.0821 ", color=GOLD, font_size=48)
+        fraction_line = Line(LEFT, RIGHT, color=WHITE).scale(0.5)
         
-        # Color coding
-        r_value[0].set_color(GOLD)    # R (gold)
-        r_value[3][0].set_color(RED)   # L (red)
-        r_value[3][2:4].set_color(BLUE)  # atm (blue)
-        r_value[3][5:7].set_color(GREEN) # mol (green)
-        r_value[3][8:].set_color(PURPLE) # K (purple)
+        # Numerator (L·atm)
+        l = Text("L", color=RED, font_size=36)
+        dot1 = Text("·", font_size=36)
+        atm = Text("atm", color=BLUE, font_size=36)
+        numerator = VGroup(l, dot1, atm).arrange(RIGHT, buff=0.1)
         
-        self.play(Write(r_value), run_time=3)
-        self.wait(5)  
+        # Denominator (mol·K)
+        mol = Text("mol", color=GREEN, font_size=36)
+        dot2 = Text("·", font_size=36)
+        k = Text("K", color=PURPLE, font_size=36)
+        denominator = VGroup(mol, dot2, k).arrange(RIGHT, buff=0.1)
         
+        # Build the fraction
+        fraction = VGroup(
+            numerator,
+            Line(numerator.get_left()+DOWN*0.2, numerator.get_right()+DOWN*0.2),
+            denominator
+        ).arrange(DOWN, buff=0.2)
         
-        connections = VGroup(
-            Line(r_value[3][0].get_top(), equation[1].get_bottom(), color=RED),    # L → V
-            Line(r_value[3][2].get_top(), equation[0].get_bottom(), color=BLUE),    # atm → P
-        )
+        r_value = VGroup(r_text, fraction).arrange(RIGHT, buff=0.2)
+        r_value.next_to(equation, DOWN, buff=1)
         
         self.play(
-            Create(connections[0]),  # L → V
-            Create(connections[1]),  # atm → P
+            Write(r_text),
+            FadeIn(fraction),
+            run_time=3
+        )
+        self.wait(5)
+        
+        # Part 3: Connections
+        l_conn = Line(l.get_top(), v.get_bottom(), color=RED)
+        atm_conn = Line(atm.get_top(), p.get_bottom(), color=BLUE)
+        
+        self.play(
+            Create(l_conn),
+            Create(atm_conn),
             run_time=2
         )
-        self.wait(12) 
+        self.wait(12)
